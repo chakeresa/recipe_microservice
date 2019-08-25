@@ -23,6 +23,7 @@ View the project board at https://github.com/chakeresa/recipe_microservice/proje
  - Run shell commands: shelljs
  - Make HTTP requests in tests: supertest
  - Test coverage: nyc (Istanbul)
+ - Make external API calls: request & request-promise
 
 ## Local Setup
  - `$ git clone git@github.com:chakeresa/recipe_microservice.git`
