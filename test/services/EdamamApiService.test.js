@@ -8,6 +8,18 @@ describe('EdamamApiService', function () {
 
     expect(service.foodType).to.equal(foodType);
 
-    done();
+    service.recipeResults()
+    .then(response => {
+      let hits = response.hits;
+      expect(hits).to.have.lengthOf(10);
+      
+      let firstRecipe = hits[0].recipe;
+      expect(firstRecipe).to.includes.all.keys('yield', 'ingredients', 'calories')
+      
+      let firstIngredient = firstRecipe.ingredients[0];
+      expect(firstIngredient).to.include.key('text')
+      
+      done();
+    })
   });
 });
