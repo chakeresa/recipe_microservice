@@ -1,4 +1,3 @@
-var app = require('../app');
 var expect = require('chai').expect;
 
 it('is a dummy test', (done) => {
