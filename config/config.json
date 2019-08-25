@@ -20,7 +20,7 @@
     "username": "postgres",
     "password": null,
     "database": "recipe_microservice_production",
-    "host": "127.0.0.1",
+    "host": "recipe-microservice.herokuapp.com",
     "dialect": "postgres",
     "operatorsAliases": false
   }
