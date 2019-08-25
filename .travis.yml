@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- stable
+cache:
+  directories:
+  - node_modules
+services:
+- postgresql
+before_script:
+- npx sequelize db:create
+- npx sequelize db:migrate
+deploy:
+  provider: heroku
+  api_key:
+    secure: fY+gDGh20UmLOuoUS835EAomEK0bG+I1C0OZpGF3UmgWM5bQIeXR37w2IxOWAvFTAniMO1m1UwKER7y/KVzK+mmsFXVPqYX2ESRcmZ9UwAoOoOV0N5m4Aac0mBUJH+ROod4A/BRb7c4pkcarZPpWcKr8cXfuogut5GvEfKVYrHfWLywBhvIPAR1Q+UyUbuGZzqVPOEZj4KXjvEgGzvAQ+8YccskJmFNsfspdLBOn4/NN7Myd32JZIlUHI5SNtS4huDi5c98x7oTFlhdJIf2l2k4gcL07sVs/RTKqiczNuEPmfGdg6xK/9VJb1TnI+DQExw2gh3gxJ5uEMkV/5GcZk7DAXwBoWn5wLXqON0NMNinV0CESYwEoJHizXXyBbeZBJ4MRXD+YMmrBuYyrKNtBP8/OcTuLHh+lRnLjcD/dMVU4h8GDqAP+km04NjSYyT0H+cmqoqJFCVCBZHzCTuc/WWXl/VdCGGvRxvuRZo6oLtntlbAZElKuMyCv4FS/G31akFVPJ4hjbYZi2PNQ7xAnlLLhl72c/PsbZqN6ETObsfrKxPri4P65Sg6OKIzgRberW2UD2gSt+rzw91eTA838hajhkof/3U/1fJ00IYa+o7PVnKtIYIRCEwkOMdoVM63EhNDzI54zv3BmEP0/VGMV9Xc6Yaj295UFxHQ7FR1X/Dk=
+  app:
+    develop: recipe-microservice
+    master: recipe-microservice
+  on:
+    repo: chakeresa/recipe_microservice
+  run:
+  - sequelize db:migrate
