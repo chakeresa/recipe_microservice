@@ -14,7 +14,7 @@ describe('EdamamApiService', function () {
       expect(hits).to.have.lengthOf(10);
       
       let firstRecipe = hits[0].recipe;
-      expect(firstRecipe).to.includes.all.keys('yield', 'ingredients', 'calories')
+      expect(firstRecipe).to.includes.all.keys('label', 'yield', 'ingredients', 'calories', 'totalTime')
       
       let firstIngredient = firstRecipe.ingredients[0];
       expect(firstIngredient).to.include.key('text')
