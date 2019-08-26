@@ -2,6 +2,8 @@ var expect = require('chai').expect;
 var EdamamApiService = require('../../util/EdamamApiService').EdamamApiService;
 
 describe('EdamamApiService', function () {
+  this.timeout(10000);
+  
   it('returns JSON for 10 recipes with a particular foodType', (done) => {
     let foodType = 'pizza';
     let service = new EdamamApiService(foodType);
