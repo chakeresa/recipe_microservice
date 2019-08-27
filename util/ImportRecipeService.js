@@ -2,12 +2,7 @@ var EdamamApiService = require('./EdamamApiService').EdamamApiService;
 var FoodType = require('../models').FoodType;
 var Recipe = require('../models').Recipe;
 var Ingredient = require('../models').Ingredient;
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
+var asyncForEach = require('./asyncForEach')
 
 class ImportRecipeService {
   constructor(foodType) {
