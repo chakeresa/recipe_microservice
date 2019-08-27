@@ -17,10 +17,10 @@ before(function() {
 beforeEach(async function() {
   console.log("global beforeEach hook starting...")
   this.timeout(20000);
-  console.log("destroying all FoodTypes...")
-  await FoodType.destroy({ where: {} })
-  console.log("destroying all Recipes...")
-  await Recipe.destroy({ where: {} })
   console.log("destroying all Ingredients...")
   await Ingredient.destroy({ where: {} })
+  console.log("destroying all Recipes...")
+  await Recipe.destroy({ where: {} })
+  console.log("destroying all FoodTypes...")
+  await FoodType.destroy({ where: {} })
 });
