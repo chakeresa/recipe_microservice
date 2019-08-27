@@ -10,7 +10,7 @@ describe('api/v1/recipes/food_search GET', function () {
     it('returns JSON with the attributes and ingredients', (done) => {
       let foodTypeName = 'pizza';
 
-      return FoodType.create({
+       FoodType.create({
         id: 1,
         name: 'chicken',
         recipes: []
@@ -26,7 +26,6 @@ describe('api/v1/recipes/food_search GET', function () {
           FoodTypeId: 1
         })
       }).then(recipe => {
-        let recipeChickenParm = recipe
 
         return Ingredient.create({
           id: 1,
@@ -48,17 +47,17 @@ describe('api/v1/recipes/food_search GET', function () {
         expect(response.statusCode).to.equal(200);
         console.log("response========")
         console.log(response.body)
-        expect(response.body).to.have.lengthOf(2);
+        expect(response.body).to.have.lengthOf(1);
 
         let firstRecipe = response.body[0];
         expect(firstRecipe).to.include.all.keys('id', 'name', 'calories', 'timeToPrepare', 'servings', 'ingredients');
         expect(firstRecipe).to.not.include.key('createdAt');
         expect(firstRecipe).to.not.include.key('updatedAt');
 
-        expect(firstRecipe.calories).to.equal(500);
-        expect(firstRecipe.name).to.equal('margarita pizza');
+        expect(firstRecipe.calories).to.equal('400');
+        expect(firstRecipe.name).to.equal('chicken parmesan');
 
-        let firstIngredient = firstIngredient.ingredients[0];
+        let firstIngredient = firstRecipe.ingredients[0];
         expect(firstIngredient).to.include.all.keys('id', 'text');
         expect(firstIngredient).to.not.include.key('createdAt');
         expect(firstIngredient).to.not.include.key('updatedAt');

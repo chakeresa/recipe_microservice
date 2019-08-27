@@ -6,8 +6,7 @@ var Recipe = require("../../../models").Recipe;
 
 /* GET recipes based on food type. */
 router.get('/food_search', function(req, res, next) {
-  console.log("=-=-=-=-=-=-=-=-")
-  console.log(`q query = ${req.query.q}`)
+  res.setHeader("Content-Type", "application/json");
   FoodType.findOne({
     where: { name: req.query.q },
     include: [{
@@ -20,13 +19,17 @@ router.get('/food_search', function(req, res, next) {
     }]
   }).then(foodTypeResource => {
     if (foodTypeResource) {
-      let recipes = foodTypeResource.recipes[0].dataValues
+      let recipesDataValues = foodTypeResource.recipes
+
+      const recipes = recipesDataValues.map(function(recipeDataValue) {
+        return recipeDataValue.dataValues
+      })
+
       console.log("recipes =")
       console.log(recipes)
       console.log("--------============------------------>>>>")
 
-      res.setHeader("Content-Type", "application/json");
-      res.status(200).send(JSON.stringify(recipes));
+      res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
     } else {
       res.status(200).send(JSON.stringify([]));
     }
