@@ -38,15 +38,11 @@ describe('api/v1/recipes/food_search GET', function () {
             where: { name: "chicken" }
         })
         }).then(foodType => {
-          console.log("---------------------------")
-          console.log(foodType[0].dataValues)
 
           return request(app)
           .get(`/api/v1/recipes/food_search?q=chicken`)
       }).then(response => {
         expect(response.statusCode).to.equal(200);
-        console.log("response========")
-        console.log(response.body)
         expect(response.body).to.have.lengthOf(1);
 
         let firstRecipe = response.body[0];

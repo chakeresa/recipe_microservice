@@ -25,16 +25,11 @@ router.get('/food_search', function(req, res, next) {
         return recipeDataValue.dataValues
       })
 
-      console.log("recipes =")
-      console.log(recipes)
-      console.log("--------============------------------>>>>")
-
       res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
     } else {
       res.status(200).send(JSON.stringify([]));
     }
   }).catch(err => {
-    console.log(err)
     let response = {error: err};
     res.status(500).send(JSON.stringify(response));
   })
