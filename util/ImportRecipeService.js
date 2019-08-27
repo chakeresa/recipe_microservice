@@ -4,6 +4,9 @@ var Recipe = require('../models').Recipe;
 var Ingredient = require('../models').Ingredient;
 var asyncForEach = require('./asyncForEach')
 
+var recipeResult
+var recipeResource
+
 class ImportRecipeService {
   constructor(foodType) {
     this.foodType = foodType;
@@ -21,8 +24,8 @@ class ImportRecipeService {
     let edamamResults = await service.recipeResults();
     let hits = edamamResults.hits;
     await asyncForEach(hits, async function(apiResult) {
-      let recipeResult = apiResult.recipe
-      await Recipe.create({
+      recipeResult = apiResult.recipe
+      recipeResource = await Recipe.create({
         name: recipeResult.label,
         FoodTypeId: foodResource.id,
         calories: parseFloat(recipeResult.calories),
@@ -33,7 +36,7 @@ class ImportRecipeService {
       await asyncForEach(recipeResult.ingredients, (async function(ingredient) {
         await Ingredient.create({
           text: ingredient.text,
-          RecipeId: recipeResult.id
+          RecipeId: recipeResource.id
         })
       }))
     })
