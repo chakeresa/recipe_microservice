@@ -32,6 +32,7 @@ View the project board at https://github.com/chakeresa/recipe_microservice/proje
  - `$ npm install`
  - `$ npx sequelize db:create`
  - `$ npx sequelize db:migrate`
+ - `$ node ./util/seedScript.js`
 
 ## Running the Server Locally
  - `$ npm start` or `$ nodemon`
