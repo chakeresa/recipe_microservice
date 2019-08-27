@@ -13,9 +13,9 @@ describe('ImportRecipeService', function () {
 
     expect(service.foodType).to.equal(foodType);
 
-    await service.createRecipes()
-
-    FoodType.count({ where: { name: foodType } }).then(count => {
+    service.createRecipes().then(() => {
+      return FoodType.count({ where: { name: foodType }})
+     }).then(count => {
       expect(count).to.equal(1);
       
       return Recipe.findAll()

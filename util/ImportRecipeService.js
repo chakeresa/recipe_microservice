@@ -3,6 +3,12 @@ var FoodType = require('../models').FoodType;
 var Recipe = require('../models').Recipe;
 var Ingredient = require('../models').Ingredient;
 
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 class ImportRecipeService {
   constructor(foodType) {
     this.foodType = foodType;
@@ -19,9 +25,8 @@ class ImportRecipeService {
     let service = new EdamamApiService(this.foodType);
     let edamamResults = await service.recipeResults();
     let hits = edamamResults.hits;
-    hits.forEach(async function(apiResult) {
+    await asyncForEach(hits, async function(apiResult) {
       let recipeResult = apiResult.recipe
-      console.log(`starting import of recipe ${recipeResult.label}`)
       await Recipe.create({
         name: recipeResult.label,
         FoodTypeId: foodResource.id,
@@ -29,16 +34,13 @@ class ImportRecipeService {
         timeToPrepare: recipeResult.totalTime,
         servings: recipeResult.yield
       })
-      console.log(`finished import of recipe ${recipeResult.label}`)
       
-      recipeResult.ingredients.forEach(async function(ingredient) {
-        console.log(`starting import of ingredient${ingredient.text}`)
+      await asyncForEach(recipeResult.ingredients, (async function(ingredient) {
         await Ingredient.create({
           text: ingredient.text,
           RecipeId: recipeResult.id
         })
-        console.log(`finished import of ingredient ${ingredient.text}`)
-      })
+      }))
     })
   }
 }
