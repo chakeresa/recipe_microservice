@@ -7,7 +7,7 @@ var Ingredient = require('../../models').Ingredient;
 describe('ImportRecipeService', function () {
   this.timeout(20000);
   
-  it('creates recipes for a particular foodType', async function(done) {
+  it('creates recipes for a particular foodType', function(done) {
     let foodType = 'pizza';
     let service = new ImportRecipeService(foodType);
 
@@ -22,11 +22,11 @@ describe('ImportRecipeService', function () {
     }).then(recipes => {
       expect(recipes).to.have.lengthOf(10);
 
-      let firstRecipe = recipes[0];
-      expect(firstRecipe.label).to.be.a('string');
-      expect(firstRecipe.calories).to.be.a('number');
-      expect(firstRecipe.timeToPrepare).to.be.a('number');
-      expect(firstRecipe.servings).to.be.a('number');
+      let firstRecipe = recipes[0].dataValues;
+      expect(firstRecipe.name).to.be.a('string');
+      expect(parseFloat(firstRecipe.calories)).to.be.a('number');
+      expect(parseFloat(firstRecipe.timeToPrepare)).to.be.a('number');
+      expect(parseFloat(firstRecipe.servings)).to.be.a('number');
 
       return Ingredient.findAll()
     }).then(ingredients => {

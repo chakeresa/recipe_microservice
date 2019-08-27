@@ -30,9 +30,9 @@ class ImportRecipeService {
       await Recipe.create({
         name: recipeResult.label,
         FoodTypeId: foodResource.id,
-        calories: recipeResult.calories,
-        timeToPrepare: recipeResult.totalTime,
-        servings: recipeResult.yield
+        calories: parseFloat(recipeResult.calories),
+        timeToPrepare: parseFloat(recipeResult.totalTime),
+        servings: parseFloat(recipeResult.yield)
       })
       
       await asyncForEach(recipeResult.ingredients, (async function(ingredient) {
