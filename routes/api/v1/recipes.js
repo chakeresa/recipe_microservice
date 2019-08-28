@@ -27,7 +27,7 @@ router.get('/food_search', function(req, res, next) {
         const recipes = recipesDataValues.map(function(recipeDataValue) {
           return recipeDataValue.dataValues
         })
-        
+
         res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
       } else {
         res.status(200).send(JSON.stringify([]));
@@ -76,6 +76,40 @@ router.get('/calorie_search', function(req, res, next) {
     }
   } else {
     error = { error: 'A numerical range of calories must be provided as a "q" query param (separated by a dash)'}
+    res.status(400).send(JSON.stringify(error));
+  }
+});
+
+router.get('/ingredient_search', function(req, res, next) {
+  queryNumber = req.query.q
+  res.setHeader("Content-Type", "application/json");
+  if (/^\d+$/.test(queryNumber)) {
+    Recipe.findAll({
+      include: [{
+        model: Ingredient,
+        as: "ingredients"
+      }]
+    }).then(recipes => {
+      let recipeList = []
+      recipes.forEach(recipe => {
+
+        if (recipe.ingredients.length == queryNumber) {
+          recipeList.push(recipe)
+        }
+      })
+      return recipeList
+    }).then(recipeList => {
+      if (recipeList) {
+        res.status(200).send(JSON.stringify(recipeList, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+      } else {
+        res.status(200).send(JSON.stringify([]));
+      }
+    }).catch(err => {
+      let response = {error: err};
+      res.status(500).send(JSON.stringify(response));
+    })
+  } else {
+    error = {error: 'Number of ingredients must be provided as a "q" query param'}
     res.status(400).send(JSON.stringify(error));
   }
 });
