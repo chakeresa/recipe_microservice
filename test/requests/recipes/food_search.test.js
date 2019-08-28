@@ -8,8 +8,6 @@ var Ingredient = require('../../../models').Ingredient;
 describe('api/v1/recipes/food_search GET', function () {
   describe('user can get all recipes from the database for a particular foodtype', function () {
     it('returns JSON with the attributes and ingredients', (done) => {
-      let foodTypeName = 'pizza';
-
       FoodType.bulkCreate([
         {
           id: 1,
