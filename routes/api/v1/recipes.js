@@ -48,11 +48,11 @@ router.get('/calorie_search', function(req, res, next) {
   let query = req.query.q;
   if (query) {
     let rangeAry = query.split('-');
-    if (rangeAry.length === 2 && rangeAry[0] != "" && rangeAry[1] != "") {
+    if (rangeAry.length === 2 && /^\d+$/.test(rangeAry[0]) && /^\d+$/.test(rangeAry[1])) {
       Recipe.findAll({
         where: {
           calories: {
-            [Op.between]: [rangeAry[0], rangeAry[1]],
+            [Op.between]: [rangeAry[0], rangeAry[1]]
           }
         },
         include: [{
@@ -71,11 +71,11 @@ router.get('/calorie_search', function(req, res, next) {
       })
 
     } else {
-      error = { error: 'A range of calories must be provided as a "q" query param (separated by a dash)' }
+      error = { error: 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' }
       res.status(400).send(JSON.stringify(error));
     }
   } else {
-    error = { error: 'A range of calories must be provided as a "q" query param (separated by a dash)'}
+    error = { error: 'A numerical range of calories must be provided as a "q" query param (separated by a dash)'}
     res.status(400).send(JSON.stringify(error));
   }
 });

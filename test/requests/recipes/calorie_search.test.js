@@ -121,7 +121,7 @@ describe('api/v1/recipes/calorie_search GET', function () {
       .then(response => {
         expect(response.statusCode).to.equal(400);
 
-        expect(response.body).to.deep.equal({'error': 'A range of calories must be provided as a "q" query param (separated by a dash)' });
+        expect(response.body).to.deep.equal({'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' });
 
         done();
       })
@@ -133,7 +133,7 @@ describe('api/v1/recipes/calorie_search GET', function () {
       .then(response => {
         expect(response.statusCode).to.equal(400);
 
-        expect(response.body).to.deep.equal({'error': 'A range of calories must be provided as a "q" query param (separated by a dash)' });
+        expect(response.body).to.deep.equal({'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' });
 
         done();
       })
@@ -145,7 +145,7 @@ describe('api/v1/recipes/calorie_search GET', function () {
       .then(response => {
         expect(response.statusCode).to.equal(400);
 
-        expect(response.body).to.deep.equal({'error': 'A range of calories must be provided as a "q" query param (separated by a dash)' });
+        expect(response.body).to.deep.equal({'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' });
 
         done();
       })
@@ -157,7 +157,19 @@ describe('api/v1/recipes/calorie_search GET', function () {
       .then(response => {
         expect(response.statusCode).to.equal(400);
 
-        expect(response.body).to.deep.equal({'error': 'A range of calories must be provided as a "q" query param (separated by a dash)' });
+        expect(response.body).to.deep.equal({'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' });
+
+        done();
+      })
+    })
+
+    it('returns 400 if non-number(s) for calorie range given', (done) => {
+      request(app)
+        .get('/api/v1/recipes/calorie_search?q=zebra-500')
+      .then(response => {
+        expect(response.statusCode).to.equal(400);
+
+        expect(response.body).to.deep.equal({'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' });
 
         done();
       })
