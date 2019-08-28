@@ -5,14 +5,9 @@ var FoodType = require('../../../models').FoodType;
 var Recipe = require('../../../models').Recipe;
 var Ingredient = require('../../../models').Ingredient;
 
-// Example Request: GET /api/v1/recipes/ingredient_search?q=2
-// Return all Recipe objects from the database that have the
-// number of ingredients specified in the query params.
-
 describe('/api/v1/recipes/ingredient_search GET', function () {
   describe('user can get all recipes from the database with a particular number of ingredients', function () {
     it('returns JSON with the attributes and ingredients', (done) => {
-      let foodTypeName = 'pizza';
 
       FoodType.bulkCreate([
         {
@@ -76,12 +71,6 @@ describe('/api/v1/recipes/ingredient_search GET', function () {
           }
         ])
       }).then(recipe => {
-// recipe1 = 3
-// recipe2 = 4
-// recipe3 = 3
-// recipe4 = 4
-// recipe5 = 3
-// recipe6 = 2
         return Ingredient.bulkCreate([
           {
             id: 1,
@@ -200,7 +189,6 @@ describe('/api/v1/recipes/ingredient_search GET', function () {
         expect(firstIngredient).to.not.include.key('createdAt');
         expect(firstIngredient).to.not.include.key('updatedAt');
 
-        done();
       }).then(() => {
         return request(app)
         .get(`/api/v1/recipes/ingredient_search?q=4`)
