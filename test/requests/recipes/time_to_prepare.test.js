@@ -1,5 +1,3 @@
-// Request: GET /api/v1/recipes?sort=time_to_prepare
-// Example response:
 var app = require('../../../app');
 var request = require("supertest");
 var expect = require('chai').expect;
@@ -7,7 +5,7 @@ var FoodType = require('../../../models').FoodType;
 var Recipe = require('../../../models').Recipe;
 var Ingredient = require('../../../models').Ingredient;
 
-describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
+describe('/api/v1/recipes/time_search?sort=ASC GET', function () {
   describe('user can get all recipes from the database in order by time to prepare', function () {
     it('returns JSON with the attributes and ingredients', (done) => {
 
@@ -172,7 +170,7 @@ describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
         ])
       }).then(() => {
         return request(app)
-        .get(`/api/v1/recipes?sort=time_to_prepare`)
+        .get(`/api/v1/recipes/time_search?sort=ASC`)
       }).then(response => {
         expect(response.statusCode).to.equal(200);
 
@@ -212,7 +210,7 @@ describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
 
     it('returns 200 if no results', (done) => {
       request(app)
-        .get(`/api/v1/recipes?sort=time_to_prepare`)
+        .get(`/api/v1/recipes/time_search?sort=ASC`)
         .then(response => {
           expect(response.statusCode).to.equal(200);
 
@@ -224,7 +222,7 @@ describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
 
     it('returns 400 if sort param is not time_to_prepare', (done) => {
       request(app)
-        .get(`/api/v1/recipes?sort=zebra`)
+        .get(`/api/v1/recipes/time_search?sort=zebra`)
         .then(response => {
           expect(response.statusCode).to.equal(400);
 
@@ -289,6 +287,11 @@ describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
             id: 3,
             text: '1 whole chicken' ,
             RecipeId: 2
+          },
+          {
+            id: 4,
+            text: '5 cups chicken broth' ,
+            RecipeId: 3
           }
         ])
       }).then(ingredient => {
@@ -297,7 +300,6 @@ describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
       }).then(response => {
         expect(response.statusCode).to.equal(200);
         expect(response.body).to.have.lengthOf(3);
-
         let firstRecipe = response.body[0];
         expect(firstRecipe).to.include.all.keys('id', 'name', 'calories', 'timeToPrepare', 'servings', 'ingredients');
         expect(firstRecipe).to.not.include.key('createdAt');
@@ -317,7 +319,7 @@ describe('/api/v1/recipes?sort=time_to_prepare GET', function () {
         expect(lastRecipe).to.not.include.key('createdAt');
         expect(lastRecipe).to.not.include.key('updatedAt');
 
-        expect(lastRecipe.calories).to.equal('400');
+        expect(lastRecipe.calories).to.equal('600');
         expect(lastRecipe.name).to.equal('chicken noodle soup');
         expect(lastRecipe.ingredients).to.have.lengthOf(1);
 

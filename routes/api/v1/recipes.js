@@ -11,6 +11,10 @@ router.get('/', function(req, res, next) {
   res.setHeader("Content-Type", "application/json")
 
   return Recipe.findAll({
+    include: [{
+      model: Ingredient,
+      as: "ingredients"
+    }]
   }).then(recipeData => {
 
     const recipes = recipeData.map(function(recipeDataValue) {
@@ -131,6 +135,22 @@ router.get('/ingredient_search', function(req, res, next) {
   }
 });
 
+/* GET recipes in order of time it takes to prepare */
+router.get('/', function(req, res, next) {
+  res.setHeader("Content-Type", "application/json")
 
+  return Recipe.findAll({
+  }).then(recipeData => {
+
+    const recipes = recipeData.map(function(recipeDataValue) {
+      return recipeDataValue.dataValues
+    })
+    console.log(recipes)
+    res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+  }).catch(error => {
+    error = { error: error }
+    res.status(400).send(JSON.stringify(error))
+  })
+})
 
 module.exports = router;
