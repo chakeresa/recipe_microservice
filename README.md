@@ -1,5 +1,5 @@
 # Receipe Microservice (for the Quantified Self Project)
-This API... (TODO) All responses are JSON.
+This API has several endpoints for a user to query a database of **food types**, **recipes**, and **ingredients**. All responses are JSON. Users can search for recipes based on a food type (for example, `pizza` or `chicken`), range of calories (for example, `100-300`), or number of ingredients. The database is seeded based on the top 10 recipes for 4 food types (chicken, pizza, burger, muffin) from the Edamam API.
 
 The app is deployed at https://recipe-microservice.herokuapp.com/.
 
@@ -16,6 +16,7 @@ View the project board at https://github.com/chakeresa/recipe_microservice/proje
  - Database: PostgreSQL v7.12.1
  - ORM: Sequelize v5.15.1
  - Testing: Mocha v6.2.0 & Chai v4.2.0
+ - Seed data: Edamam recipe search API
 
 ## Other Packages
  - Secure ENV variable storage: dotenv
@@ -138,7 +139,7 @@ Body:
 { 'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' }
 ```
 
-### Return all recipes with a particular number of ingredients as JSON.
+### Return all recipes with a particular number of ingredients
 Request:
 ```
 GET /api/v1/recipes/ingredient_search?q=2
@@ -193,6 +194,9 @@ Content-Type: application/json
 Body:
 {error: 'Number of ingredients must be provided as a "q" query param'}
 ```
+## Known Issues
+ - Potential to optimize query by number of ingredients (currently using forEach instead of an SQL query)
+
 ## Core Contributors
  - Alexandra Chakeres, [@chakeresa](https://github.com/chakeresa)
  - Ryan Miller, [@ryanmillergm](https://github.com/ryanmillergm)
