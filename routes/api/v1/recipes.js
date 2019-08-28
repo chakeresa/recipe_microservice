@@ -42,7 +42,7 @@ router.get('/food_search', function(req, res, next) {
   }
 });
 
-/* GET recipes based on a range of calories  */
+/* GET recipes based on a range of calories */
 router.get('/calorie_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
   let query = req.query.q;
@@ -80,6 +80,7 @@ router.get('/calorie_search', function(req, res, next) {
   }
 });
 
+/* GET recipes based on number of ingredients */
 router.get('/ingredient_search', function(req, res, next) {
   queryNumber = req.query.q
   res.setHeader("Content-Type", "application/json");
@@ -112,6 +113,12 @@ router.get('/ingredient_search', function(req, res, next) {
     error = {error: 'Number of ingredients must be provided as a "q" query param'}
     res.status(400).send(JSON.stringify(error));
   }
+});
+
+/* GET average calories (optional: for a particular food type) */
+router.get('/average_calories', function (req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  res.status(200).send(JSON.stringify({message: "hello"}));
 });
 
 module.exports = router;
