@@ -90,6 +90,61 @@ Body:
 {'error': 'Food type must be provided as a "q" query param'}
 ```
 
+### Return the associated Recipe with a particular number of ingredients as JSON.
+Request:
+```
+GET /api/v1/recipes/ingredient_search?q=2
+Accept: application/json
+```
+Example response:
+```
+Status: 200
+Content-Type: application/json
+Body:
+[
+  {
+    id: 1,
+    name: 'Chicken Soup',
+    calories: 300,
+    timeToPrepare: 90,
+    servings: 4,
+    ingredients: [
+      {
+        id: 1,
+        text: '5 cups chicken stock'
+      },
+      {
+        id: 2,
+        text: '1/2 cup celery'
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Chicken Parmesan',
+    calories: 150,
+    timeToPrepare: 60,
+    servings: 2,
+    ingredients: [
+      {
+        id: 3,
+        text: '2 chicken breasts'
+      },
+      {
+        id: 4,
+        text: '3/4 cup shredded parmesan'
+      }
+    ]
+  }
+]
+```
+Failed response(if no number of ingredients is given for 'q' query params):
+```
+Status: 400
+Content-Type: application/json
+Body:
+{error: 'Food type must be provided as a "q" query param'}
+```
 ## Core Contributors
  - Alexandra Chakeres, [@chakeresa](https://github.com/chakeresa)
  - Ryan Miller, [@ryanmillergm](https://github.com/ryanmillergm)

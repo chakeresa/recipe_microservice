@@ -74,16 +74,4 @@ router.get('/ingredient_search', function(req, res, next) {
   }
 });
 
-// .then(recipeList => {
-//   if (recipeList) {
-//     res.status(200).send(JSON.stringify(recipeList))
-//   } else {
-//     error = {error: 'Number of ingredients must be provided as a "q" query param'}
-//     res.status(400).send(JSON.stringify(error));
-//   }
-// }).catch(err => {
-//   let response = {error: err};
-//   res.status(500).send(JSON.stringify(response));
-// })
-
 module.exports = router;
