@@ -1,5 +1,5 @@
 # Receipe Microservice (for the Quantified Self Project)
-This REST API... (TODO) All responses are JSON.
+This API... (TODO) All responses are JSON.
 
 The app is deployed at https://recipe-microservice.herokuapp.com/.
 
@@ -42,52 +42,100 @@ View the project board at https://github.com/chakeresa/recipe_microservice/proje
  - `$ npm test`
 
 ## API Endpoints
-### Return the associated Recipe objects that are associated with the particular FOOD_TYPE as JSON.
+### Return all Recipe objects that are associated with a particular food type
 Request:
 ```
 GET /api/v1/recipes/food_search?q=FOOD_TYPE
 Accept: application/json
 ```
-Example response:
+Example successful response:
 ```
 Status: 200
 Content-Type: application/json
 Body:
 [
   {
-    id: 1,
-    name: 'Chicken Soup',
-    calories: 300,
-    timeToPrepare: 90,
-    servings: 4,
-    ingredients: [
+    "id": 1,
+    "name": "Chicken Soup",
+    "calories": 300,
+    "timeToPrepare": 90,
+    "servings": 4,
+    "ingredients": [
       {
-        id: 1,
-        text: '5 cups chicken stock'
+        "id": 1,
+        "text": "5 cups chicken stock"
       },
       {
-        id: 2,
-        text: '1/2 cup celery'
+        "id": 2,
+        "text": "1/2 cup celery"
       }
     ]
   },
   {
-    id: 2,
-    name: 'Chicken Parmesan',
-    calories: 400,
-    timeToPrepare: 60,
-    servings: 2,
-    ingredients: [
+    "id": 2,
+    "name": "Chicken Parmesan",
+    "calories": 400,
+    "timeToPrepare": 60,
+    "servings": 2,
+    "ingredients": [
     ]
   }
 ]
 ```
-Failed response(if no food type given for 'q' query params):
+Failed response (if no food type given for `q` query params):
 ```
 Status: 400
 Content-Type: application/json
 Body:
-{'error': 'Food type must be provided as a "q" query param'}
+{ 'error': 'Food type must be provided as a "q" query param' }
+```
+
+### Return all Recipe objects that are within a particular calorie range
+Example Request:
+```
+GET /api/v1/recipes/calories_search?q=100-300
+Accept: application/json
+```
+Example successful response:
+```
+Status: 200
+Content-Type: application/json
+Body:
+[
+  {
+    "id": 1,
+    "name": "Chicken Soup",
+    "calories": 300,
+    "timeToPrepare": 90,
+    "servings": 4,
+    "ingredients": [
+      {
+        "id": 1,
+        "text": "5 cups chicken stock"
+      },
+      {
+        "id": 2,
+        "text": "1/2 cup celery"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Chicken Parmesan",
+    "calories": 150,
+    "timeToPrepare": 60,
+    "servings": 1,
+    "ingredients": [
+    ]
+  }
+]
+```
+Failed response (if `q` query params are not two numbers separated by a dash):
+```
+Status: 400
+Content-Type: application/json
+Body:
+{ 'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' }
 ```
 
 ## Core Contributors
