@@ -42,10 +42,10 @@ View the project board at https://github.com/chakeresa/recipe_microservice/proje
  - `$ npm test`
 
 ## API Endpoints
-### Endpoint 1 (TODO)
+### Return the associated Recipe objects that are associated with the particular FOOD_TYPE as JSON.
 Request:
 ```
-GET /api/v1/foods
+GET /api/v1/recipes/food_search?q=FOOD_TYPE
 Accept: application/json
 ```
 Example response:
@@ -54,17 +54,40 @@ Status: 200
 Content-Type: application/json
 Body:
 [
-    {
-        "id": 1,
-        "name": "peas",
-        "calories": 10
-    },
-    {
-        "id": 2,
-        "name": "candy bar",
-        "calories": 300
-    }
+  {
+    id: 1,
+    name: 'Chicken Soup',
+    calories: 300,
+    timeToPrepare: 90,
+    servings: 4,
+    ingredients: [
+      {
+        id: 1,
+        text: '5 cups chicken stock'
+      },
+      {
+        id: 2,
+        text: '1/2 cup celery'
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Chicken Parmesan',
+    calories: 400,
+    timeToPrepare: 60,
+    servings: 2,
+    ingredients: [
+    ]
+  }
 ]
+```
+Failed response(if no food type given for 'q' query params):
+```
+Status: 400
+Content-Type: application/json
+Body:
+{'error': 'Food type must be provided as a "q" query param'}
 ```
 
 ## Core Contributors
