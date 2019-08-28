@@ -90,7 +90,7 @@ Body:
 {'error': 'Food type must be provided as a "q" query param'}
 ```
 
-### Return the associated Recipe with a particular number of ingredients as JSON.
+### Return all recipes with a particular number of ingredients as JSON.
 Request:
 ```
 GET /api/v1/recipes/ingredient_search?q=2
@@ -143,7 +143,7 @@ Failed response(if no number of ingredients is given for 'q' query params):
 Status: 400
 Content-Type: application/json
 Body:
-{error: 'Food type must be provided as a "q" query param'}
+{error: 'Number of ingredients must be provided as a "q" query param'}
 ```
 ## Core Contributors
  - Alexandra Chakeres, [@chakeresa](https://github.com/chakeresa)

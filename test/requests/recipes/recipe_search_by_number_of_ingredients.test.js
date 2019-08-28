@@ -189,7 +189,6 @@ describe('/api/v1/recipes/ingredient_search GET', function () {
         expect(firstIngredient).to.not.include.key('createdAt');
         expect(firstIngredient).to.not.include.key('updatedAt');
 
-      }).then(() => {
         return request(app)
         .get(`/api/v1/recipes/ingredient_search?q=4`)
       }).then(response => {
@@ -226,13 +225,25 @@ describe('/api/v1/recipes/ingredient_search GET', function () {
         })
     });
 
-    it('returns 400 if no food type is given', (done) => {
+    it('returns 400 if number of ingredients is not given', (done) => {
       request(app)
         .get('/api/v1/recipes/ingredient_search')
         .then(response => {
           expect(response.statusCode).to.equal(400);
 
-          expect(response.body).to.deep.equal({'error': 'Food type must be provided as a "q" query param'});
+          expect(response.body).to.deep.equal({'error': 'Number of ingredients must be provided as a "q" query param'});
+
+          done();
+        })
+    })
+
+    it('returns 400 if number of ingredients is not a number', (done) => {
+      request(app)
+        .get('/api/v1/recipes/ingredient_search?q=zebra')
+        .then(response => {
+          expect(response.statusCode).to.equal(400);
+
+          expect(response.body).to.deep.equal({'error': 'Number of ingredients must be provided as a "q" query param'});
 
           done();
         })

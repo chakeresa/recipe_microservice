@@ -41,9 +41,9 @@ router.get('/food_search', function(req, res, next) {
 });
 
 router.get('/ingredient_search', function(req, res, next) {
-
+  queryNumber = req.query.q
   res.setHeader("Content-Type", "application/json");
-  if (req.query.q) {
+  if (/^\d+$/.test(queryNumber)) {
     Recipe.findAll({
       include: [{
         model: Ingredient,
@@ -53,7 +53,7 @@ router.get('/ingredient_search', function(req, res, next) {
       let recipeList = []
       recipes.forEach(recipe => {
 
-        if (recipe.ingredients.length == req.query.q) {
+        if (recipe.ingredients.length == queryNumber) {
           recipeList.push(recipe)
         }
       })
@@ -69,7 +69,7 @@ router.get('/ingredient_search', function(req, res, next) {
       res.status(500).send(JSON.stringify(response));
     })
   } else {
-    error = {error: 'Food type must be provided as a "q" query param'}
+    error = {error: 'Number of ingredients must be provided as a "q" query param'}
     res.status(400).send(JSON.stringify(error));
   }
 });
