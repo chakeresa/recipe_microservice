@@ -6,6 +6,23 @@ var Recipe = require("../../../models").Recipe;
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+/* GET all recipes */
+router.get('/', function(req, res, next) {
+  res.setHeader("Content-Type", "application/json")
+
+  return Recipe.findAll({
+  }).then(recipeData => {
+
+    const recipes = recipeData.map(function(recipeDataValue) {
+      return recipeDataValue.dataValues
+    })
+    res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+  }).catch(error => {
+    error = { error: error }
+    res.status(400).send(JSON.stringify(error))
+  })
+})
+
 /* GET recipes based on food type */
 router.get('/food_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
@@ -113,5 +130,7 @@ router.get('/ingredient_search', function(req, res, next) {
     res.status(400).send(JSON.stringify(error));
   }
 });
+
+
 
 module.exports = router;
