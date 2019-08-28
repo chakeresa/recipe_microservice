@@ -102,5 +102,17 @@ describe('api/v1/recipes/food_search GET', function () {
           done();
         })
     });
+
+    it('returns 400 if no food type is given', (done) => {
+      request(app)
+        .get('/api/v1/recipes/food_search')
+        .then(response => {
+          expect(response.statusCode).to.equal(400);
+
+          expect(response.body).to.deep.equal({'error': 'Food type must be provided as a "q" query param'});
+
+          done();
+        })
+    })
   });
 });

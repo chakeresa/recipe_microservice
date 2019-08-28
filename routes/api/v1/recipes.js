@@ -7,32 +7,37 @@ var Recipe = require("../../../models").Recipe;
 /* GET recipes based on food type. */
 router.get('/food_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
-  FoodType.findOne({
-    where: { name: req.query.q },
-    include: [{
-      model: Recipe,
-      as: "recipes",
+  if (req.query.q) {
+    FoodType.findOne({
+      where: { name: req.query.q },
       include: [{
-        model: Ingredient,
-        as: "ingredients"
+        model: Recipe,
+        as: "recipes",
+        include: [{
+          model: Ingredient,
+          as: "ingredients"
+        }]
       }]
-    }]
-  }).then(foodTypeResource => {
-    if (foodTypeResource) {
-      let recipesDataValues = foodTypeResource.recipes
+    }).then(foodTypeResource => {
+      if (foodTypeResource) {
+        let recipesDataValues = foodTypeResource.recipes
 
-      const recipes = recipesDataValues.map(function(recipeDataValue) {
-        return recipeDataValue.dataValues
-      })
-
-      res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
-    } else {
-      res.status(200).send(JSON.stringify([]));
-    }
-  }).catch(err => {
-    let response = {error: err};
-    res.status(500).send(JSON.stringify(response));
-  })
+        const recipes = recipesDataValues.map(function(recipeDataValue) {
+          return recipeDataValue.dataValues
+        })
+        
+        res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+      } else {
+        res.status(200).send(JSON.stringify([]));
+      }
+    }).catch(err => {
+      let response = {error: err};
+      res.status(500).send(JSON.stringify(response));
+    })
+  } else {
+    error = {error: 'Food type must be provided as a "q" query param'}
+    res.status(400).send(JSON.stringify(error));
+  }
 });
 
 module.exports = router;
