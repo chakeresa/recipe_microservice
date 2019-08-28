@@ -46,17 +46,9 @@ router.get('/food_search', function(req, res, next) {
 router.get('/calorie_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
   let query = req.query.q;
-  console.log('*******************');
-  console.log("query = " + query)
-  console.log('*******************');
   if (query) {
     let rangeAry = query.split('-');
-    console.log('*******************');
-    console.log("rangeAry = " + rangeAry)
-    console.log("rangeAry length = " + rangeAry.length);
-    console.log(rangeAry.length === 2);
-    console.log('*******************');
-    if (rangeAry.length === 2) {
+    if (rangeAry.length === 2 && rangeAry[0] != "" && rangeAry[1] != "") {
       Recipe.findAll({
         where: {
           calories: {
@@ -69,22 +61,11 @@ router.get('/calorie_search', function(req, res, next) {
         }]
       }).then(recipes => {
         if (recipes) {
-          console.log('*******************');
-          console.log('recipes in controller =' + JSON.stringify(recipes));
-          console.log('*******************');
-  
-          // const recipes = recipesDataValues.map(function(recipeDataValue) {
-          //   return recipeDataValue.dataValues
-          // })
-          
           res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
         } else {
           res.status(200).send(JSON.stringify([]));
         }
       }).catch(err => {
-        console.log('*******************');
-        console.log("error = " + error);
-        console.log('*******************');
         let response = { error: err };
         res.status(500).send(JSON.stringify(response));
       })
