@@ -89,8 +89,8 @@ describe('api/v1/recipes/calorie_search GET', function () {
         expect(firstRecipe).to.not.include.key('createdAt');
         expect(firstRecipe).to.not.include.key('updatedAt');
 
-        expect(firstRecipe.calories).to.be.oneOf('400', '350');
-        expect(firstRecipe.name).to.be.oneOf('chicken parmesan', 'basil chicken');
+        expect(firstRecipe.calories).to.be.oneOf(['400', '350']);
+        expect(firstRecipe.name).to.be.oneOf(['chicken parmesan', 'basil chicken']);
         expect(firstRecipe.ingredients).to.have.lengthOf(2);
 
         let firstIngredient = firstRecipe.ingredients[0];
