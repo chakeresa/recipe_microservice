@@ -1,7 +1,7 @@
-# Receipe Microservice (for the Quantified Self Project)
+# Receipe Microservice (part of the [Quantified Self Project](https://github.com/ryanmillergm/quantified_self))
 This API has several endpoints for a user to query a database of **food types**, **recipes**, and **ingredients**. All responses are JSON. Users can search for recipes based on a food type (for example, `pizza` or `chicken`), range of calories (for example, `100-300`), or number of ingredients. The database is seeded based on the top 10 recipes for 4 food types (chicken, pizza, burger, muffin) from the Edamam API.
 
-The app is deployed at https://recipe-microservice.herokuapp.com/.
+The microservice is deployed at https://recipe-microservice.herokuapp.com/.
 
 This project was part of [Turing School of Software & Design](https://turing.io)'s Back End Engineering program (Mod 4). See the project spec [here](https://backend.turing.io/module4/projects/quantified_self/qs_server_side). It was completed in 10 days by [Alexandra Chakeres](https://github.com/chakeresa) and [Ryan Miller](https://github.com/ryanmillergm).
 
