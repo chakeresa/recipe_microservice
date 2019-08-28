@@ -82,6 +82,13 @@ Body:
   }
 ]
 ```
+Failed response(if no food type given for 'q' query params):
+```
+Status: 400
+Content-Type: application/json
+Body:
+{'error': 'Food type must be provided as a "q" query param'}
+```
 
 ## Core Contributors
  - Alexandra Chakeres, [@chakeresa](https://github.com/chakeresa)
