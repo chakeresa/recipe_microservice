@@ -3,8 +3,10 @@ var router = express.Router();
 var FoodType = require("../../../models").FoodType;
 var Ingredient = require("../../../models").Ingredient;
 var Recipe = require("../../../models").Recipe;
+var Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
-/* GET recipes based on food type. */
+/* GET recipes based on food type */
 router.get('/food_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
   if (req.query.q) {
@@ -31,11 +33,49 @@ router.get('/food_search', function(req, res, next) {
         res.status(200).send(JSON.stringify([]));
       }
     }).catch(err => {
-      let response = {error: err};
+      let response = { error: err };
       res.status(500).send(JSON.stringify(response));
     })
   } else {
-    error = {error: 'Food type must be provided as a "q" query param'}
+    error = { error: 'Food type must be provided as a "q" query param' }
+    res.status(400).send(JSON.stringify(error));
+  }
+});
+
+/* GET recipes based on a range of calories  */
+router.get('/calorie_search', function(req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  let query = req.query.q;
+  if (query) {
+    let rangeAry = query.split('-');
+    if (rangeAry.length === 2 && /^\d+$/.test(rangeAry[0]) && /^\d+$/.test(rangeAry[1])) {
+      Recipe.findAll({
+        where: {
+          calories: {
+            [Op.between]: [rangeAry[0], rangeAry[1]]
+          }
+        },
+        include: [{
+          model: Ingredient,
+          as: "ingredients"
+        }]
+      }).then(recipes => {
+        if (recipes) {
+          res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+        } else {
+          res.status(200).send(JSON.stringify([]));
+        }
+      }).catch(err => {
+        let response = { error: err };
+        res.status(500).send(JSON.stringify(response));
+      })
+
+    } else {
+      error = { error: 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' }
+      res.status(400).send(JSON.stringify(error));
+    }
+  } else {
+    error = { error: 'A numerical range of calories must be provided as a "q" query param (separated by a dash)'}
     res.status(400).send(JSON.stringify(error));
   }
 });
