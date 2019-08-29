@@ -121,24 +121,21 @@ describe('api/v1/recipes/average_calories GET', function () {
         return request(app)
           .get(`/api/v1/recipes/average_calories?food_type=chicken`)
       }).then(response => {
-        console.log('**************');
-        console.log("response.body = " + JSON.stringify(response.body));
-        console.log('**************');
         expect(response.statusCode).to.equal(200);
-
+        
         let average_calories = Math.round((400 + 550 + 350) / 3.0);
         let expected = {
           average_calories: average_calories
         }
         expect(response.body).to.deep.equal(expected);
-
+        
         done();
       })
     });
-
+    
     it('returns 404 if no results for that food type', (done) => {
       request(app)
-        .get('/api/v1/recipes/average_calories?food_type=candy')
+      .get('/api/v1/recipes/average_calories?food_type=candy')
       .then(response => {
         expect(response.statusCode).to.equal(404);
 
@@ -151,10 +148,3 @@ describe('api/v1/recipes/average_calories GET', function () {
     });
   });
 });
-
-// TODO: delete
-// 'column "Recipe.id" must appear in the GROUP BY clause or be used in an aggregate function'
-// `SELECT Recipe.id, AVG(calories) AS avgCalories, foodType.id AS foodType.id, foodType.name AS foodType.name
-//   FROM Recipes AS Recipe
-//   INNER JOIN FoodTypes AS foodType ON Recipe.FoodTypeId = foodType.id
-//   AND foodType.name = 'chicken';`
