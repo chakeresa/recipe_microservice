@@ -118,7 +118,25 @@ router.get('/ingredient_search', function(req, res, next) {
 /* GET average calories (optional: for a particular food type) */
 router.get('/average_calories', function (req, res, next) {
   res.setHeader("Content-Type", "application/json");
-  res.status(200).send(JSON.stringify({message: "hello"}));
+  let foodType = req.query.food_type;
+  let queryObject = {
+    include: [{
+      model: Ingredient,
+      as: "ingredients"
+    }]
+  };
+  if (foodType) {
+    queryObject.where = {
+      '$FoodTypes.name$': foodType
+    }
+  }
+  Recipe.findAll(queryObject)
+  .then(recipes => {
+    res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+  }).catch(err => {
+    let error = { error: err };
+    res.status(500).send(JSON.stringify(error));
+  })
 });
 
 module.exports = router;
