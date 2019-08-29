@@ -43,13 +43,13 @@ View the project board at https://github.com/chakeresa/recipe_microservice/proje
  - `$ npm test`
 
 ## API Endpoints
-### Return all Recipe objects that are associated with a particular food type
+### Return **all** recipe objects and their ingredients
 Request:
 ```
-GET /api/v1/recipes/food_search?q=FOOD_TYPE
+GET /api/v1/recipes
 Accept: application/json
 ```
-Example successful response:
+Example response:
 ```
 Status: 200
 Content-Type: application/json
@@ -83,6 +83,47 @@ Body:
   }
 ]
 ```
+
+### Return all recipe objects that are associated with a particular food type
+Request:
+```
+GET /api/v1/recipes/food_search?q=FOOD_TYPE
+Accept: application/json
+```
+Example successful response:
+```
+Status: 200
+Content-Type: application/json
+Body:
+[
+  {
+    "id": 1,
+    "name": "Chicken Soup",
+    "calories": 300,
+    "timeToPrepare": 90,
+    "servings": 4,
+    "ingredients": [
+      {
+        "id": 1,
+        "text": "5 cups chicken stock"
+      },
+      {
+        "id": 2,
+        "text": "1/2 cup celery"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Chicken Parmesan",
+    "calories": 400,
+    "timeToPrepare": 60,
+    "servings": 2,
+    "ingredients": [
+    ]
+  }
+]
+```
 Failed response (if no food type given for `q` query params):
 ```
 Status: 400
@@ -91,7 +132,7 @@ Body:
 { 'error': 'Food type must be provided as a "q" query param' }
 ```
 
-### Return all Recipe objects that are within a particular calorie range
+### Return all recipe objects that are within a particular calorie range
 Example Request:
 ```
 GET /api/v1/recipes/calories_search?q=100-300
@@ -187,12 +228,12 @@ Body:
   }
 ]
 ```
-Failed response(if no number of ingredients is given for 'q' query params):
+Failed response (if no number of ingredients is given for 'q' query params):
 ```
 Status: 400
 Content-Type: application/json
 Body:
-{error: 'Number of ingredients must be provided as a "q" query param'}
+{ error: 'Number of ingredients must be provided as a "q" query param' }
 ```
 
 ### Return all recipes in order of time it takes to prepare
@@ -265,7 +306,7 @@ Failed response(if query parameter is not 'ASC' or 'DESC'):
 Status: 400
 Content-Type: application/json
 Body:
-{'error': "Sort param must be 'ASC' or 'DESC'"}
+{ 'error': "Sort param must be 'ASC' or 'DESC'" }
 ```
 
 ## Known Issues
