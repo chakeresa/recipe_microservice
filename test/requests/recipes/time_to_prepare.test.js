@@ -181,8 +181,8 @@ describe('/api/v1/recipes/time_search?sort=ASC GET', function () {
 
         expect(firstRecipe.calories).to.equal('1200');
         expect(firstRecipe.name).to.equal('garlic bread');
-        expect(firstRecipe.servings).to.equal(4);
-        expect(firstRecipe.ingredients).to.have.lengthOf(3);
+        expect(firstRecipe.servings).to.equal("4");
+        expect(firstRecipe.ingredients).to.have.lengthOf(2);
 
         let firstIngredient = firstRecipe.ingredients[0];
         expect(firstIngredient).to.include.all.keys('id', 'text');
@@ -196,7 +196,7 @@ describe('/api/v1/recipes/time_search?sort=ASC GET', function () {
 
         expect(secondRecipe.calories).to.equal('1200');
         expect(secondRecipe.name).to.equal('spaghetti');
-        expect(secondRecipe.servings).to.equal(4);
+        expect(secondRecipe.servings).to.equal("4");
         expect(secondRecipe.ingredients).to.have.lengthOf(3);
 
         let secondIngredient = secondRecipe.ingredients[1];
@@ -220,13 +220,14 @@ describe('/api/v1/recipes/time_search?sort=ASC GET', function () {
         })
     });
 
-    it('returns 400 if sort param is not time_to_prepare', (done) => {
+    it('returns 400 if sort param is not ASC OR DESC', (done) => {
       request(app)
         .get(`/api/v1/recipes/time_search?sort=zebra`)
         .then(response => {
           expect(response.statusCode).to.equal(400);
-
-          expect(response.body).to.deep.equal({'error': 'Number of ingredients must be provided as a "q" query param'});
+          console.log("ERROR _______________________--------------------------")
+          console.log(response.body)
+          expect(response.body).to.deep.equal({'error': "Sort param must be 'ASC' or 'DESC'"});
 
           done();
         })
@@ -300,6 +301,7 @@ describe('/api/v1/recipes/time_search?sort=ASC GET', function () {
       }).then(response => {
         expect(response.statusCode).to.equal(200);
         expect(response.body).to.have.lengthOf(3);
+
         let firstRecipe = response.body[0];
         expect(firstRecipe).to.include.all.keys('id', 'name', 'calories', 'timeToPrepare', 'servings', 'ingredients');
         expect(firstRecipe).to.not.include.key('createdAt');
