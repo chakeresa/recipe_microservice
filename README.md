@@ -306,6 +306,36 @@ Body:
 { "error": "Sort param must be 'ASC' or 'DESC'" }
 ```
 
+### Return the average calories of all recipes (or a subset of recipes based on food type)
+Example request (for all recipes):
+```
+GET /api/v1/recipes/average_calories
+Accept: application/json
+```
+Example request (for recipes for only one food type):
+```
+GET /api/v1/recipes/average_calories?food_type=pizza
+Accept: application/json
+```
+Example successful response:
+```
+Status: 200
+Content-Type: application/json
+Body:
+{
+  "average_calories": 475
+}
+```
+Example failed response (if there were no results for that food type):
+```
+Status: 404
+Content-Type: application/json
+Body:
+{
+  "error": "No recipes found for pizza"
+}
+```
+
 ## Known Issues
  - Potential to optimize query by number of ingredients (currently using forEach instead of an SQL query)
 

@@ -6,6 +6,22 @@ var Recipe = require("../../../models").Recipe;
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+function serverError(res, err) {
+  let response = { error: err };
+  res.status(500).send(JSON.stringify(response));
+};
+
+function sendEmptyArray(res) {
+  res.status(200).send(JSON.stringify([]));
+};
+
+function sendAverageCalories(res, recipes) {
+  let avgCalories = Math.round(recipes[0].dataValues.avgCalories);
+  res.status(200).send(JSON.stringify({ average_calories: avgCalories }));
+};
+
+var recipeAttributes = ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"];
+
 /* GET all recipes */
 router.get('/', function(req, res, next) {
   res.setHeader("Content-Type", "application/json")
@@ -49,13 +65,12 @@ router.get('/food_search', function(req, res, next) {
           return recipeDataValue.dataValues
         })
 
-        res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+        res.status(200).send(JSON.stringify(recipes, recipeAttributes));
       } else {
-        res.status(200).send(JSON.stringify([]));
+        sendEmptyArray(res);
       }
     }).catch(err => {
-      let response = { error: err };
-      res.status(500).send(JSON.stringify(response));
+      serverError(res, err);
     })
   } else {
     error = { error: 'Food type must be provided as a "q" query param' }
@@ -63,7 +78,7 @@ router.get('/food_search', function(req, res, next) {
   }
 });
 
-/* GET recipes based on a range of calories  */
+/* GET recipes based on a range of calories */
 router.get('/calorie_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
   let query = req.query.q;
@@ -82,13 +97,12 @@ router.get('/calorie_search', function(req, res, next) {
         }]
       }).then(recipes => {
         if (recipes) {
-          res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+          res.status(200).send(JSON.stringify(recipes, recipeAttributes));
         } else {
-          res.status(200).send(JSON.stringify([]));
+          sendEmptyArray(res);
         }
       }).catch(err => {
-        let response = { error: err };
-        res.status(500).send(JSON.stringify(response));
+        serverError(res, err);
       })
 
     } else {
@@ -101,6 +115,7 @@ router.get('/calorie_search', function(req, res, next) {
   }
 });
 
+/* GET recipes based on number of ingredients */
 router.get('/ingredient_search', function(req, res, next) {
   queryNumber = req.query.q
   res.setHeader("Content-Type", "application/json");
@@ -121,17 +136,53 @@ router.get('/ingredient_search', function(req, res, next) {
       return recipeList
     }).then(recipeList => {
       if (recipeList) {
-        res.status(200).send(JSON.stringify(recipeList, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+        res.status(200).send(JSON.stringify(recipeList, recipeAttributes));
       } else {
-        res.status(200).send(JSON.stringify([]));
+        sendEmptyArray(res);
       }
     }).catch(err => {
-      let response = {error: err};
-      res.status(500).send(JSON.stringify(response));
+      serverError(res, err);
     })
   } else {
     error = {error: 'Number of ingredients must be provided as a "q" query param'}
     res.status(400).send(JSON.stringify(error));
+  }
+});
+
+/* GET average calories (optional: for a particular food type) */
+router.get('/average_calories', function (req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  let foodTypeName = req.query.food_type;
+  let queryObject = {
+    attributes: [[Sequelize.fn('AVG', Sequelize.col('calories')), 'avgCalories']]
+  };
+  if (foodTypeName) {
+    FoodType.findOne({
+      where: {
+        name: foodTypeName
+      }
+    }).then(foodType => {
+      if (foodType) {
+        queryObject.where = {
+          FoodTypeId: foodType.id
+        };
+        Recipe.findAll(queryObject)
+        .then(recipes => {
+          sendAverageCalories(res, recipes);
+        })
+      } else {
+        res.status(404).send(JSON.stringify({ error: `No recipes found for "${foodTypeName}"` }));
+      }
+    }).catch(err => {
+      serverError(res, err);
+    })
+  } else {
+    Recipe.findAll(queryObject)
+    .then(recipes => {
+      sendAverageCalories(res, recipes);
+    }).catch(err => {
+      serverError(res, err);
+    })
   }
 });
 
@@ -155,11 +206,11 @@ router.get('/time_search', function(req, res, next) {
       const recipes = recipesData.map(function(recipesData) {
         return recipesData.dataValues
       })
+
       res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
     })
     .catch(err =>{
-      let error = { error: err }
-      res.status(500).send(JSON.stringify(error));
+      serverError(res, err);
     })
   } else {
     let error = { error: "Sort param must be 'ASC' or 'DESC'" }
