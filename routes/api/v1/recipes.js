@@ -6,6 +6,27 @@ var Recipe = require("../../../models").Recipe;
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+/* GET all recipes */
+router.get('/', function(req, res, next) {
+  res.setHeader("Content-Type", "application/json")
+
+  return Recipe.findAll({
+    include: [{
+      model: Ingredient,
+      as: "ingredients"
+    }]
+  }).then(recipeData => {
+
+    const recipes = recipeData.map(function(recipeDataValue) {
+      return recipeDataValue.dataValues
+    })
+    res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+  }).catch(error => {
+    error = { error: error }
+    res.status(400).send(JSON.stringify(error))
+  })
+})
+
 /* GET recipes based on food type */
 router.get('/food_search', function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
@@ -113,5 +134,37 @@ router.get('/ingredient_search', function(req, res, next) {
     res.status(400).send(JSON.stringify(error));
   }
 });
+
+/* GET recipes in order of time it takes to prepare */
+router.get('/time_search', function(req, res, next) {
+  res.setHeader("Content-Type", "application/json")
+  sort = req.query.sort
+
+  if (sort === 'ASC' || sort === 'DESC') {
+
+    Recipe.findAll({
+      order: [['timeToPrepare', sort]],
+      limit: 10,
+      include: [{
+        model: Ingredient,
+        as: "ingredients"
+      }]
+    })
+    .then(recipesData => {
+
+      const recipes = recipesData.map(function(recipesData) {
+        return recipesData.dataValues
+      })
+      res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
+    })
+    .catch(err =>{
+      let error = { error: err }
+      res.status(500).send(JSON.stringify(error));
+    })
+  } else {
+    let error = { error: "Sort param must be 'ASC' or 'DESC'" }
+    res.status(400).send(error);
+  }
+})
 
 module.exports = router;
