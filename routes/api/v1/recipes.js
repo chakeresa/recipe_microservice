@@ -206,11 +206,11 @@ router.get('/time_search', function(req, res, next) {
       const recipes = recipesData.map(function(recipesData) {
         return recipesData.dataValues
       })
+
       res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
     })
     .catch(err =>{
-      let error = { error: err }
-      res.status(500).send(JSON.stringify(error));
+      serverError(res, err);
     })
   } else {
     let error = { error: "Sort param must be 'ASC' or 'DESC'" }
