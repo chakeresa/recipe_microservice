@@ -151,3 +151,10 @@ describe('api/v1/recipes/average_calories GET', function () {
     });
   });
 });
+
+// TODO: delete
+// 'column "Recipe.id" must appear in the GROUP BY clause or be used in an aggregate function'
+// `SELECT Recipe.id, AVG(calories) AS avgCalories, foodType.id AS foodType.id, foodType.name AS foodType.name
+//   FROM Recipes AS Recipe
+//   INNER JOIN FoodTypes AS foodType ON Recipe.FoodTypeId = foodType.id
+//   AND foodType.name = 'chicken';`

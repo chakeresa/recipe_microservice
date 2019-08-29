@@ -117,24 +117,21 @@ router.get('/ingredient_search', function(req, res, next) {
 
 /* GET average calories (optional: for a particular food type) */
 router.get('/average_calories', function (req, res, next) {
-  console.log('inside controller 1');
   res.setHeader("Content-Type", "application/json");
-  console.log('inside controller 2');
   let foodType = req.query.food_type;
-  console.log('inside controller 3');
   let queryObject = {
     attributes: [[Sequelize.fn('AVG', Sequelize.col('calories')), 'avgCalories']]
   };
-  console.log('inside controller 4');
   if (foodType) {
     console.log('inside controller 5');
     queryObject.include = [{
       model: FoodType,
-      as: 'foodType'
+      as: 'foodType',
+      attributes: ['name'],
+      where: {
+        name: foodType
+      }
     }]
-    queryObject.where = {
-      '$FoodTypes.name$': foodType
-    }
   }
   console.log('inside controller 6');
   Recipe.findAll(queryObject)
