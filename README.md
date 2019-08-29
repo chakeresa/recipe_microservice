@@ -78,8 +78,7 @@ Body:
     "calories": 400,
     "timeToPrepare": 60,
     "servings": 2,
-    "ingredients": [
-    ]
+    "ingredients": []
   }
 ]
 ```
@@ -119,8 +118,7 @@ Body:
     "calories": 400,
     "timeToPrepare": 60,
     "servings": 2,
-    "ingredients": [
-    ]
+    "ingredients": []
   }
 ]
 ```
@@ -129,7 +127,7 @@ Failed response (if no food type given for `q` query params):
 Status: 400
 Content-Type: application/json
 Body:
-{ 'error': 'Food type must be provided as a "q" query param' }
+{ "error": 'Food type must be provided as a "q" query param' }
 ```
 
 ### Return all recipe objects that are within a particular calorie range
@@ -167,8 +165,7 @@ Body:
     "calories": 150,
     "timeToPrepare": 60,
     "servings": 1,
-    "ingredients": [
-    ]
+    "ingredients": []
   }
 ]
 ```
@@ -177,7 +174,7 @@ Failed response (if `q` query params are not two numbers separated by a dash):
 Status: 400
 Content-Type: application/json
 Body:
-{ 'error': 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' }
+{ "error": 'A numerical range of calories must be provided as a "q" query param (separated by a dash)' }
 ```
 
 ### Return all recipes with a particular number of ingredients
@@ -193,36 +190,36 @@ Content-Type: application/json
 Body:
 [
   {
-    id: 1,
-    name: 'Chicken Soup',
-    calories: 300,
-    timeToPrepare: 90,
-    servings: 4,
-    ingredients: [
+    "id": 1,
+    "name": "Chicken Soup",
+    "calories": 300,
+    "timeToPrepare": 90,
+    "servings": 4,
+    "ingredients": [
       {
-        id: 1,
-        text: '5 cups chicken stock'
+        "id": 1,
+        "text": "5 cups chicken stock"
       },
       {
-        id: 2,
-        text: '1/2 cup celery'
+        "id": 2,
+        "text": "1/2 cup celery"
       }
     ]
   },
   {
-    id: 2,
-    name: 'Chicken Parmesan',
-    calories: 150,
-    timeToPrepare: 60,
-    servings: 2,
-    ingredients: [
+    "id": 2,
+    "name": "Chicken Parmesan",
+    "calories": 150,
+    "timeToPrepare": 60,
+    "servings": 2,
+    "ingredients": [
       {
-        id: 3,
-        text: '2 chicken breasts'
+        "id": 3,
+        "text": "2 chicken breasts"
       },
       {
-        id: 4,
-        text: '3/4 cup shredded parmesan'
+        "id": 4,
+        "text": "3/4 cup shredded parmesan"
       }
     ]
   }
@@ -233,7 +230,7 @@ Failed response (if no number of ingredients is given for 'q' query params):
 Status: 400
 Content-Type: application/json
 Body:
-{ error: 'Number of ingredients must be provided as a "q" query param' }
+{ "error": 'Number of ingredients must be provided as a "q" query param' }
 ```
 
 ### Return all recipes in order of time it takes to prepare
@@ -249,64 +246,64 @@ Content-Type: application/json
 Body:
 [
   {
-    id: 2,
-    name: 'Top Ramen',
-    calories: 300,
-    timeToPrepare: 15,
-    servings: 4,
-    ingredients: [
+    "id": 2,
+    "name": "Top Ramen",
+    "calories": 300,
+    "timeToPrepare": 15,
+    "servings": 4,
+    "ingredients": [
       {
-        id: 3,
-        text: '1 pack Top Ramen'
+        "id": 3,
+        "text": "1 pack Top Ramen"
       },
       {
-        id: 4,
-        text: '2 cups water'
+        "id": 4,
+        "text": "2 cups water"
       }
     ]
   },
   {
-    id: 3,
-    name: 'Chicken Parmesan',
-    calories: 150,
-    timeToPrepare: 30,
-    servings: 2,
-    ingredients: [
+    "id": 3,
+    "name": "Chicken Parmesan",
+    "calories": 150,
+    "timeToPrepare": 30,
+    "servings": 2,
+    "ingredients": [
       {
-        id: 5,
-        text: '2 chicken breasts'
+        "id": 5,
+        "text": "2 chicken breasts"
       },
       {
-        id: 6,
-        text: '3/4 cup shredded parmesan'
+        "id": 6,
+        "text": "3/4 cup shredded parmesan"
       }
     ]
   },
   {
-    id: 1,
-    name: 'Lasagna',
-    calories: 1200,
-    timeToPrepare: 180,
-    servings: 2,
-    ingredients: [
+    "id": 1,
+    "name": "Lasagna",
+    "calories": 1200,
+    "timeToPrepare": 180,
+    "servings": 2,
+    "ingredients": [
       {
-        id: 1,
-        text: '4 lasagna pasta'
+        "id": 1,
+        "text": "4 lasagna pasta"
       },
       {
-        id: 2,
-        text: '4 cups marinara sauce'
+        "id": 2,
+        "text": "4 cups marinara sauce"
       }
     ]
   }
 ]
 ```
-Failed response(if query parameter is not 'ASC' or 'DESC'):
+Failed response (if query parameter is not 'ASC' or 'DESC'):
 ```
 Status: 400
 Content-Type: application/json
 Body:
-{ 'error': "Sort param must be 'ASC' or 'DESC'" }
+{ "error": "Sort param must be 'ASC' or 'DESC'" }
 ```
 
 ## Known Issues
