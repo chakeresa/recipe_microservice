@@ -117,26 +117,37 @@ router.get('/ingredient_search', function(req, res, next) {
 
 /* GET average calories (optional: for a particular food type) */
 router.get('/average_calories', function (req, res, next) {
+  console.log('inside controller 1');
   res.setHeader("Content-Type", "application/json");
+  console.log('inside controller 2');
   let foodType = req.query.food_type;
+  console.log('inside controller 3');
   let queryObject = {
-    include: [{
-      model: Ingredient,
-      as: "ingredients"
-    }]
+    attributes: [[Sequelize.fn('AVG', Sequelize.col('calories')), 'avgCalories']]
   };
+  console.log('inside controller 4');
   if (foodType) {
+    console.log('inside controller 5');
+    queryObject.include = [{
+      model: FoodType,
+      as: 'foodType'
+    }]
     queryObject.where = {
       '$FoodTypes.name$': foodType
     }
   }
+  console.log('inside controller 6');
   Recipe.findAll(queryObject)
-  .then(recipes => {
-    res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
-  }).catch(err => {
-    let error = { error: err };
-    res.status(500).send(JSON.stringify(error));
-  })
+    .then(recipes => {
+      let avgCalories = Math.round(recipes[0].dataValues.avgCalories);
+      res.status(200).send(JSON.stringify({ average_calories: avgCalories }));
+    }).catch(err => {
+      console.log('**************');
+      console.log('error = ' + err)
+      console.log('**************');
+      let error = { error: err };
+      res.status(500).send(JSON.stringify(error));
+    })
 });
 
 module.exports = router;

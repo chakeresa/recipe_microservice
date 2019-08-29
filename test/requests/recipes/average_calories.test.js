@@ -60,7 +60,7 @@ describe('api/v1/recipes/average_calories GET', function () {
       }).then(response => {
         expect(response.statusCode).to.equal(200);
 
-        let average_calories = (400 + 600 + 550 + 350) / 4.0;
+        let average_calories = Math.round((400 + 600 + 550 + 350) / 4.0);
         let expected = {
           average_calories: average_calories
         }
@@ -121,9 +121,12 @@ describe('api/v1/recipes/average_calories GET', function () {
         return request(app)
           .get(`/api/v1/recipes/average_calories?food_type=chicken`)
       }).then(response => {
+        console.log('**************');
+        console.log("response.body = " + JSON.stringify(response.body));
+        console.log('**************');
         expect(response.statusCode).to.equal(200);
 
-        let average_calories = (400 + 550 + 350) / 3.0;
+        let average_calories = Math.round((400 + 550 + 350) / 3.0);
         let expected = {
           average_calories: average_calories
         }
