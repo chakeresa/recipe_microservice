@@ -158,11 +158,11 @@ router.get('/time_search', function(req, res, next) {
       res.status(200).send(JSON.stringify(recipes, ["id", "name", "calories", "timeToPrepare", "servings", "ingredients", "id", "text"]));
     })
     .catch(err =>{
-      error = { error: err }
-      res.status(400).send(JSON.stringify(error))
+      let error = { error: err }
+      res.status(500).send(JSON.stringify(error));
     })
   } else {
-    error = { error: "Sort param must be 'ASC' or 'DESC'" }
+    let error = { error: "Sort param must be 'ASC' or 'DESC'" }
     res.status(400).send(error);
   }
 })
