@@ -225,110 +225,21 @@ describe('/api/v1/recipes/time_search?sort=ASC GET', function () {
         .get(`/api/v1/recipes/time_search?sort=zebra`)
         .then(response => {
           expect(response.statusCode).to.equal(400);
-          console.log("ERROR _______________________--------------------------")
-          console.log(response.body)
           expect(response.body).to.deep.equal({'error': "Sort param must be 'ASC' or 'DESC'"});
 
           done();
         })
     })
 
-    it('returns all recipes if no sort param is given', (done) => {
-      FoodType.bulkCreate([
-        {
-          id: 1,
-          name: 'chicken'
-        },
-        {
-          id: 2,
-          name: 'pizza'
-        }
-      ]).then(foodType => {
+    it('returns 400 if no sort param is given', (done) => {
+      
+      request(app)
+        .get(`/api/v1/recipes/time_search`)
+      .then(response => {
+        expect(response.statusCode).to.equal(400);
 
-        return Recipe.bulkCreate([
-          {
-            id: 1,
-            name: 'chicken parmesan',
-            calories: 400,
-            timeToPrepare: 95,
-            servings: 2,
-            FoodTypeId: 1
-          },
-          {
-            id: 2,
-            name: 'pepperoni pizza',
-            calories: 400,
-            timeToPrepare: 95,
-            servings: 2,
-            FoodTypeId: 2
-          },
-          {
-            id: 3,
-            name: 'chicken noodle soup',
-            calories: 600,
-            timeToPrepare: 180,
-            servings: 4,
-            FoodTypeId: 1
-          }
-        ])
-      }).then(recipe => {
-
-        return Ingredient.bulkCreate([
-          {
-            id: 1,
-            text: '2 chicken breasts' ,
-            RecipeId: 1
-          },
-          {
-            id: 2,
-            text: '1 cup grated parmesan' ,
-            RecipeId: 1
-          },
-          {
-            id: 3,
-            text: '1 whole chicken' ,
-            RecipeId: 2
-          },
-          {
-            id: 4,
-            text: '5 cups chicken broth' ,
-            RecipeId: 3
-          }
-        ])
-      }).then(ingredient => {
-        return request(app)
-        .get(`/api/v1/recipes`)
-      }).then(response => {
-        expect(response.statusCode).to.equal(200);
-        expect(response.body).to.have.lengthOf(3);
-
-        let firstRecipe = response.body[0];
-        expect(firstRecipe).to.include.all.keys('id', 'name', 'calories', 'timeToPrepare', 'servings', 'ingredients');
-        expect(firstRecipe).to.not.include.key('createdAt');
-        expect(firstRecipe).to.not.include.key('updatedAt');
-
-        expect(firstRecipe.calories).to.equal('400');
-        expect(firstRecipe.name).to.equal('chicken parmesan');
-        expect(firstRecipe.ingredients).to.have.lengthOf(2);
-
-        let firstIngredient = firstRecipe.ingredients[0];
-        expect(firstIngredient).to.include.all.keys('id', 'text');
-        expect(firstIngredient).to.not.include.key('createdAt');
-        expect(firstIngredient).to.not.include.key('updatedAt');
-
-        let lastRecipe = response.body[2];
-        expect(lastRecipe).to.include.all.keys('id', 'name', 'calories', 'timeToPrepare', 'servings', 'ingredients');
-        expect(lastRecipe).to.not.include.key('createdAt');
-        expect(lastRecipe).to.not.include.key('updatedAt');
-
-        expect(lastRecipe.calories).to.equal('600');
-        expect(lastRecipe.name).to.equal('chicken noodle soup');
-        expect(lastRecipe.ingredients).to.have.lengthOf(1);
-
-        let onlyIngredient = lastRecipe.ingredients[0];
-        expect(onlyIngredient).to.include.all.keys('id', 'text');
-        expect(onlyIngredient).to.not.include.key('createdAt');
-        expect(onlyIngredient).to.not.include.key('updatedAt');
+        expected = { error: "Sort param must be 'ASC' or 'DESC'" }
+        expect(response.body).to.deep.equal(expected);
 
         done();
       })
