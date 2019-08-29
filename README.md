@@ -193,6 +193,80 @@ Content-Type: application/json
 Body:
 {error: 'Number of ingredients must be provided as a "q" query param'}
 ```
+
+### Return all recipes in order of time it takes to prepare as JSON.
+Request:
+```
+GET `/api/v1/recipes/time_search?sort=ASC`
+Accept: application/json
+```
+Example response:
+```
+Status: 200
+Content-Type: application/json
+Body:
+[
+  {
+    id: 1,
+    name: 'Top Ramen',
+    calories: 300,
+    timeToPrepare: 15,
+    servings: 4,
+    ingredients: [
+      {
+        id: 1,
+        text: '1 pack Top Ramen'
+      },
+      {
+        id: 2,
+        text: '2 cups water'
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Chicken Parmesan',
+    calories: 150,
+    timeToPrepare: 30,
+    servings: 2,
+    ingredients: [
+      {
+        id: 3,
+        text: '2 chicken breasts'
+      },
+      {
+        id: 4,
+        text: '3/4 cup shredded parmesan'
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Lasagna',
+    calories: 1200,
+    timeToPrepare: 180,
+    servings: 2,
+    ingredients: [
+      {
+        id: 3,
+        text: '4 lasagna pasta'
+      },
+      {
+        id: 4,
+        text: '4 cups marinara sauce'
+      }
+    ]
+  }
+]
+```
+Failed response(if query parameter is not 'ASC' or 'DESC'):
+```
+Status: 400
+Content-Type: application/json
+Body:
+{'error': "Sort param must be 'ASC' or 'DESC'"}
+```
+
 ## Core Contributors
  - Alexandra Chakeres, [@chakeresa](https://github.com/chakeresa)
  - Ryan Miller, [@ryanmillergm](https://github.com/ryanmillergm)
