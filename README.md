@@ -196,7 +196,7 @@ Body:
 ```
 
 ### Return all recipes in order of time it takes to prepare
-Request:
+Example request (can sort `ASC` or `DESC`):
 ```
 GET `/api/v1/recipes/time_search?sort=ASC`
 Accept: application/json
@@ -208,52 +208,52 @@ Content-Type: application/json
 Body:
 [
   {
-    id: 1,
+    id: 2,
     name: 'Top Ramen',
     calories: 300,
     timeToPrepare: 15,
     servings: 4,
     ingredients: [
       {
-        id: 1,
+        id: 3,
         text: '1 pack Top Ramen'
       },
       {
-        id: 2,
+        id: 4,
         text: '2 cups water'
       }
     ]
   },
   {
-    id: 2,
+    id: 3,
     name: 'Chicken Parmesan',
     calories: 150,
     timeToPrepare: 30,
     servings: 2,
     ingredients: [
       {
-        id: 3,
+        id: 5,
         text: '2 chicken breasts'
       },
       {
-        id: 4,
+        id: 6,
         text: '3/4 cup shredded parmesan'
       }
     ]
   },
   {
-    id: 2,
+    id: 1,
     name: 'Lasagna',
     calories: 1200,
     timeToPrepare: 180,
     servings: 2,
     ingredients: [
       {
-        id: 3,
+        id: 1,
         text: '4 lasagna pasta'
       },
       {
-        id: 4,
+        id: 2,
         text: '4 cups marinara sauce'
       }
     ]
